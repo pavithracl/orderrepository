@@ -122,7 +122,16 @@ public class OrderServiceImpl implements OrderService {
 		orderDTO.setStatus(order.getStatus());		
 		return orderDTO;
 	}
+	@Override
+	public void updateOrderStatus(String orderId, String status) throws OrderMsException {
+		Optional<Order> order = orderRepository.findByOrderId(orderId);
+		if (order.isPresent() == true) {
+			order.get().setStatus(status);
+			orderRepository.save(order.get());
+		} else
+			throw new OrderMsException("Order not found!!");
 
+	}
 	@Override
 	public String reOrder(String buyerId, String orderId) throws OrderMsException {
 		Optional<Order> optional = orderRepository.findByOrderId(orderId);

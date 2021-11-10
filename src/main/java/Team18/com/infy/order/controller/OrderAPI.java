@@ -25,6 +25,7 @@ import Team18.com.infy.order.dto.CartDTO;
 import Team18.com.infy.order.dto.OrderDTO;
 import Team18.com.infy.order.dto.OrderPlacedDTO;
 import Team18.com.infy.order.dto.ProductDTO;
+import Team18.com.infy.order.exception.OrderMsException;
 import Team18.com.infy.order.service.OrderService;
 
 @RestController
@@ -156,7 +157,16 @@ public class OrderAPI {
 			return new ResponseEntity<>(newMsg,HttpStatus.UNAUTHORIZED);
 		}		
 	}
-	
+	@GetMapping(value = "/order/status/{orderId}/{status}")
+	public ResponseEntity<String> updateStatus(@PathVariable String orderId, @PathVariable String status) {
+		try {
+
+			orderService.updateOrderStatus(orderId, status);
+			return new ResponseEntity<String>("Status updated successfully!", HttpStatus.OK);
+		} catch (OrderMsException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		}
+	}
 	@PostMapping(value = "/removeFromCart/{buyerId}/{prodId}")
 	public ResponseEntity<String> removeFromCart(@PathVariable String buyerId, @PathVariable String prodId){
 		

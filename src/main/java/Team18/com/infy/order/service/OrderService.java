@@ -20,5 +20,6 @@ public interface OrderService {
 
 	public String reOrder(String buyerId, String orderId) throws OrderMsException;
 
+	public void updateOrderStatus(String orderId, String status) throws OrderMsException;
 
 }
